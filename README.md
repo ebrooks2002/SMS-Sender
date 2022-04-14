@@ -1,3 +1,3 @@
-# Text message sender
+# SMS App
 
 Info about your project goes here
