@@ -36,7 +36,7 @@ public class UI {
         canvas.add(enterMessage, 200, 150);
 
         this.onEnterNumber();
-        this.onEnterNumber();
+        this.onEnterMessage();
     }
 
     private void onEnterNumber() {
