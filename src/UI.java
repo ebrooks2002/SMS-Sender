@@ -56,19 +56,21 @@ public class UI {
     }
 
     private void onEnterMessage() {
-        enterNumber.onClick(() -> {
+        enterMessage.onClick(() -> {
             message = new String();
             Boolean notEmpty = messageField.getText().length() != 0;
             if (notEmpty) {
                 message = messageField.getText();
             }
             else {
-                messageField.setBackground(Color.RED);
+
                 System.out.println("enter a valid message.");
+                messageField.setBackground(Color.RED);
             }
         });
     }
 
+    
     public static void main(String[] args) {
         new UI(500);
     }
