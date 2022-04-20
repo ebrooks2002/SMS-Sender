@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -43,7 +42,8 @@ public class UI {
         enterNumber.onClick(() -> {
             Boolean correctSize = numberField.getText().length() == 10;
             Boolean onlyNumbers = numberField.getText().matches("[0-9]+");
-            if (correctSize && onlyNumbers) {
+            Boolean notEnteredYet = numberList.contains(numberField.getText());
+            if (correctSize && onlyNumbers && notEnteredYet) {
                 numberList.add(numberField.getText());
                 System.out.println(numberList);
                 numberField.setBackground(Color.GREEN);
@@ -63,16 +63,13 @@ public class UI {
                 message = messageField.getText();
             }
             else {
-
-                System.out.println("enter a valid message.");
+                System.out.println("Enter a valid message.");
                 messageField.setBackground(Color.RED);
             }
         });
     }
 
-    
     public static void main(String[] args) {
         new UI(500);
     }
-
 }
