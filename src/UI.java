@@ -28,6 +28,7 @@ public class UI {
     private ArrayList<String> numberList;
     private CanvasWindow canvas;
     private String message;
+    private ArrayList<String> nameList;
     private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
 
     public UI(int canvasSize) {
@@ -48,8 +49,10 @@ public class UI {
         numberButton = new Button("Enter");
         messageButton = new Button("Enter");
         sendButton = new Button("Send message");
-
+        //Lists;
+        nameList = new ArrayList<String>();
         numberList = new ArrayList<String>();
+
         //Text fields:
         canvas.add(yourNumberField, 100,40);
         canvas.add(numberField, 100, 140);
@@ -66,7 +69,8 @@ public class UI {
         canvas.add(numberButton, 200, 140);
         canvas.add(messageButton, 200, 190);
         canvas.add(sendButton, 100, 240);
-        
+
+        onNameButton();
         onNumberButton();
         onMessageButton();
         onSendButton();
@@ -90,7 +94,7 @@ public class UI {
         });
     }
 
-    private static void onYourNumberButton() {
+    private void onYourNumberButton() {
         yourNumberButton.onClick(() -> {
             Boolean correctSize = yourNumberField.getText().length() == 10;
             Boolean onlyNumbers = yourNumberField.getText().matches("[0-9]+");
@@ -104,9 +108,19 @@ public class UI {
         });
     }
 
-    private static void onNameButton() {
+    private void onNameButton() {
         nameButton.onClick(() -> {
-            
+            Boolean notEmpty = messageField.getText().length() != 0;
+            Boolean notEnteredYet = !nameList.contains(nameField.getText());
+            if (notEmpty && notEnteredYet) {
+                nameList.add(nameField.getText());
+                System.out.println(nameList);
+                nameField.setBackground(Color.GREEN);
+            }
+            else {
+                System.out.println("Please enter a valid name: ");
+                nameField.setBackground(Color.RED);
+            }
         });
     }
 
@@ -126,11 +140,12 @@ public class UI {
 
     private void onSendButton() {
         sendButton.onClick(() -> {
-            System.out.println(message);
+            
         });
     }
 
     public static void main(String[] args) {
         new UI(500);
     }
+
 }
