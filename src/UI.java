@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsText;
@@ -8,28 +9,29 @@ import edu.macalester.graphics.ui.TextField;
 
 public class UI {
     //Text Fields:
-    private TextField numberField;
-    private TextField messageField;
-    private TextField nameField;
-    private TextField yourNumberField;
+    private static TextField numberField;
+    private static TextField messageField;
+    private static TextField nameField;
+    private static TextField yourNumberField;
     //Headers for each field:
-    private GraphicsText yourNumberFieldHeader;
-    private GraphicsText numberFieldHeader;
-    private GraphicsText messageFieldHeader;
-    private GraphicsText nameFieldHeader;
+    private static GraphicsText yourNumberFieldHeader;
+    private static GraphicsText numberFieldHeader;
+    private static GraphicsText messageFieldHeader;
+    private static GraphicsText nameFieldHeader;
     //Buttons:
-    private Button yourNumberButton;
-    private Button nameButton;
-    private Button numberButton;
-    private Button messageButton;
-    private Button sendButton;
+    private static Button yourNumberButton;
+    private static Button nameButton;
+    private static Button numberButton;
+    private static Button messageButton;
+    private static Button sendButton;
     //Other:
     private ArrayList<String> numberList;
     private CanvasWindow canvas;
     private String message;
+    private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
 
     public UI(int canvasSize) {
-        canvas = new CanvasWindow("SMS sender", canvasSize, (int) (canvasSize * .8));
+        this.canvas = new CanvasWindow("SMS sender", canvasSize, (int) (canvasSize * .8));
         //Text fields:
         yourNumberField = new TextField();
         nameField = new TextField();
@@ -49,22 +51,26 @@ public class UI {
 
         numberList = new ArrayList<String>();
         //Text fields:
+        canvas.add(yourNumberField, 100,40);
         canvas.add(numberField, 100, 140);
         canvas.add(messageField, 100, 190);
         canvas.add(nameField, 100,90);
         //Headers for each field:
+        canvas.add(yourNumberFieldHeader, 100, 30);
         canvas.add(numberFieldHeader, 100, 135);
         canvas.add(messageFieldHeader, 105, 185);
         canvas.add(nameFieldHeader, 100, 80);
         //Buttons:
+        canvas.add(yourNumberButton, 200, 40);
         canvas.add(nameButton, 200, 90);
         canvas.add(numberButton, 200, 140);
         canvas.add(messageButton, 200, 190);
         canvas.add(sendButton, 100, 240);
         
-        this.onNumberButton();
-        this.onMessageButton();
-        this.onSendButton();
+        onNumberButton();
+        onMessageButton();
+        onSendButton();
+        onYourNumberButton();
     }
 
     private void onNumberButton() {
@@ -84,6 +90,26 @@ public class UI {
         });
     }
 
+    private static void onYourNumberButton() {
+        yourNumberButton.onClick(() -> {
+            Boolean correctSize = yourNumberField.getText().length() == 10;
+            Boolean onlyNumbers = yourNumberField.getText().matches("[0-9]+");
+            if (correctSize && onlyNumbers) {
+                numberField.setBackground(Color.GREEN);
+            } 
+            else {
+                System.out.println("Please Enter a valid phone number.");
+                numberField.setBackground(Color.RED);
+            }
+        });
+    }
+
+    private static void onNameButton() {
+        nameButton.onClick(() -> {
+            
+        });
+    }
+
     private void onMessageButton() {
         messageButton.onClick(() -> {
             message = new String();
@@ -100,11 +126,11 @@ public class UI {
 
     private void onSendButton() {
         sendButton.onClick(() -> {
-            
+            System.out.println(message);
         });
     }
+
     public static void main(String[] args) {
         new UI(500);
     }
-
 }
