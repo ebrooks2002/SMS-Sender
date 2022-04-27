@@ -4,11 +4,20 @@ import java.util.HashMap;
 import edu.macalester.graphics.*;
 import edu.macalester.graphics.ui.*;
 
-public class sendSection extends GraphicsGroup {
+/**
+ * This class is responsible for sending the text messages
+ */
+public class SendSection extends GraphicsGroup {
 
-    private static final String NAME_REPLACEMENT = "#####";
+    public static final String NAME_REPLACEMENT = "#####";
 
-    public sendSection(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap, TextField messageField, double x, double y) {
+    /**
+     * Setsup placement of objects as well as the commands of buttons.
+     * @param result = GraphicsText that gets updated based on success or failure to notify user
+     * @param nameNumberMap = hashmap containing all of the numbers / names
+     * @param messageField = JTextArea containing the message we want to send
+     */
+    public SendSection(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap, MessageInput messageField, double x, double y) {
         super();
         GraphicsText spamInstructions = new GraphicsText("Spam count: ");
 
@@ -24,19 +33,28 @@ public class sendSection extends GraphicsGroup {
             }
             catch (Exception e) {
                 result.setText("Please enter in valid spam number");
+                result.setFillColor(Color.RED);
                 return;
             }
+            result.setText("Sending messages...");
+            result.setFillColor(Color.BLUE);
+
             String message = messageField.getText();
             for (int count = 0; count < num; count++) {
                 nameNumberMap.forEach((key, value) -> {
                     text(key, message.replaceAll(NAME_REPLACEMENT, value)); // Replaces all instances of NAME_REPLACEMENT with name to personalize text messages
                 });
             }
+            result.setText("Sent all messages!");
+            result.setFillColor(Color.GREEN);
+            messageField.setText("Input message here: ");
         });
 
         Button clear = new Button("Clear all data"); // Clears names and numbers
         clear.onClick(() -> {
             nameNumberMap.clear();
+            result.setText("Cleared all data");
+            result.setFillColor(Color.BLUE);
         });
 
         // Bounding box
@@ -60,7 +78,10 @@ public class sendSection extends GraphicsGroup {
         canvas.add(this, x, y);
     }
 
-    public void text(String number, String message) {
+    /**
+     * Uses applescript to send a text message by telling java to run the script as a command line.
+     */
+    private void text(String number, String message) {
         String[] launchCmd = {"osascript", "-e",    "on run argv\n" +
                                                         "tell application \"Messages\"\n" +
                                                             "set targetBuddy to (item 1 of argv)\n" +
@@ -78,19 +99,4 @@ public class sendSection extends GraphicsGroup {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        CanvasWindow canvas = new CanvasWindow("testing", 800, 800);
-        GraphicsText result = new GraphicsText("Result");
-        canvas.add(result, 0, 0);
-        TextField message = new TextField();
-        message.setText("Hi #####, this works");
-        canvas.add(message, 50, 50);
-        HashMap<String, String> test = new HashMap<>();
-        test.put("6504474476", "Timothy");
-
-        new sendSection(canvas, result, test, message, 100, 100);
-    }
-
-
 }
