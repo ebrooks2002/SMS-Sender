@@ -4,10 +4,19 @@ import java.util.HashMap;
 import edu.macalester.graphics.*;
 import edu.macalester.graphics.ui.*;
 
+/**
+ * This class is responsible for sending the text messages
+ */
 public class SendSection extends GraphicsGroup {
 
     public static final String NAME_REPLACEMENT = "#####";
 
+    /**
+     * Setsup placement of objects as well as the commands of buttons.
+     * @param result = GraphicsText that gets updated based on success or failure to notify user
+     * @param nameNumberMap = hashmap containing all of the numbers / names
+     * @param messageField = JTextArea containing the message we want to send
+     */
     public SendSection(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap, MessageInput messageField, double x, double y) {
         super();
         GraphicsText spamInstructions = new GraphicsText("Spam count: ");
@@ -69,7 +78,10 @@ public class SendSection extends GraphicsGroup {
         canvas.add(this, x, y);
     }
 
-    public void text(String number, String message) {
+    /**
+     * Uses applescript to send a text message by telling java to run the script as a command line.
+     */
+    private void text(String number, String message) {
         String[] launchCmd = {"osascript", "-e",    "on run argv\n" +
                                                         "tell application \"Messages\"\n" +
                                                             "set targetBuddy to (item 1 of argv)\n" +

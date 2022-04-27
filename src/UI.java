@@ -3,14 +3,18 @@ import java.util.HashMap;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsText;
 
-
+/**
+ * This class is responsible for the placement and management of all the components combined onto the canvas.
+ */
 public class UI {
     private static final int CANVAS_WIDTH = 800;
     private static final int CANVAS_HEIGHT = 600;
     
-    // Other:
     private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
 
+    /**
+     * Creates all the components, and adds them to the canvas.
+     */
     public UI() {
         CanvasWindow canvas = new CanvasWindow("SMS sender", CANVAS_WIDTH, CANVAS_HEIGHT);
 

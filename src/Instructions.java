@@ -6,10 +6,20 @@ import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.TextAlignment;
 
+/**
+ * This group holds the instructions as a graphics text as well as the results graphicstext, which gets updated
+ * after every action.
+ */
 public class Instructions extends GraphicsGroup {
 
     private GraphicsText result = new GraphicsText("Results displayed here");
 
+    /**
+     * Sets up the placement of objects.
+     * @param canvas
+     * @param x
+     * @param y
+     */
     public Instructions(CanvasWindow canvas, double x, double y) {
         super();
 
@@ -43,11 +53,11 @@ public class Instructions extends GraphicsGroup {
         canvas.add(this, x, y);
     }
 
+    /**
+     * Returns the GraphicsText object that all the components will use to describe the results
+     * of the users actions
+     */
     public GraphicsText getResults() {
         return result;
-    }
-
-    public static void main(String[] args) {
-        new Instructions(new CanvasWindow("testing", 500, 500), 0, 0);
     }
 }

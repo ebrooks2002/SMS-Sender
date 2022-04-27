@@ -7,6 +7,9 @@ import javax.swing.JComponent;
 
 import edu.macalester.graphics.GraphicsObject;
 
+/**
+ * Copied hidden class in Kilt graphics that we needed for TextArea.java file.
+ */
 abstract class EmbeddedSwingComponent extends GraphicsObject {
 
     private final JComponent component;

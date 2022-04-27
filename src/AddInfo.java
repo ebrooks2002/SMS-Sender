@@ -8,6 +8,10 @@ import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
+/**
+ * Class that adds textfields and graphicstexts to instruct the user where to input the phone number
+ * and names.
+ */
 public class AddInfo extends GraphicsGroup{
 
     private GraphicsText result;
@@ -21,6 +25,11 @@ public class AddInfo extends GraphicsGroup{
     
     private Button addButton = new Button("Add");
     
+    /**
+     * Sets up the creation of the addinfo section.
+     * @param result = GraphicsText object that gets updated for every action, explaining the results of that action
+     * @param nameNumberMap = Hashmap with keys being numbers and values being the connected name.
+     */
     public AddInfo(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap, double x, double y) {
         super();
         this.nameNumberMap = nameNumberMap;
@@ -36,18 +45,21 @@ public class AddInfo extends GraphicsGroup{
         canvas.add(this, x, y);
     }
 
-    public void addNumberObjects() {
+    private void addNumberObjects() {
         add(numberField, 10, 28);
         add(numberFieldHeader, 15, 25);
     }
 
-    public void addNameObjects() {
+    private void addNameObjects() {
         add(nameField, 10, 80);
         add(nameFieldHeader, 15, 78);
     }
 
-
-    public void onAddButton() {
+    /**
+     * Programs so that on button click, checks if there's a valid number. If there is, then adds it to the 
+     * hashmap and updates components to notify user if it successfully added component or not.
+     */
+    private void onAddButton() {
         addButton.onClick(() -> {
             String number = numberField.getText();
             boolean correctSize = number.length() == 10;
@@ -63,7 +75,9 @@ public class AddInfo extends GraphicsGroup{
         });
     }
 
-
+    /**
+     * Sets a timer delay before reverting the text fields back to white. Text fields first set to input color
+     */
     private void updateFields(Color color, String results) {
         numberField.setBackground(color);
         nameField.setBackground(color);
