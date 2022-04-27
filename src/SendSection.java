@@ -9,7 +9,7 @@ import edu.macalester.graphics.ui.*;
  */
 public class SendSection extends GraphicsGroup {
 
-    public static final String NAME_REPLACEMENT = "#####";
+    public static final String NAME_REPLACEMENT = "##";
 
     /**
      * Setsup placement of objects as well as the commands of buttons.
