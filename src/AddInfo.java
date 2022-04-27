@@ -14,16 +14,18 @@ public class AddInfo extends GraphicsGroup{
     private HashMap<String, String> nameNumberMap;
 
     private TextField nameField = new TextField();
-    private GraphicsText nameFieldHeader = new GraphicsText("Enter a number:");
+    private GraphicsText nameFieldHeader = new GraphicsText("Enter a name:");
     
 
     private TextField numberField = new TextField();
-    private GraphicsText numberFieldHeader = new GraphicsText("Enter a name:");
+    private GraphicsText numberFieldHeader = new GraphicsText("Enter a number:");
     
     private Button addButton = new Button("Add");
     
     public AddInfo(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap) {
         super();
+        this.result = result;
+        this.nameNumberMap = nameNumberMap;
         Rectangle rect = new Rectangle(10, 5, 200, 160);
         rect.setStrokeColor(Color.BLACK);
         rect.setFillColor(Color.LIGHT_GRAY);
@@ -33,19 +35,17 @@ public class AddInfo extends GraphicsGroup{
         addNumberObjects();
         add(addButton, 100, 130);
         onAddButton();
-
     }
 
-    public void addNumberObjects() {
+    public void addNameObjects() {  
         add(nameField, 0, 28);
         add(nameFieldHeader, 5, 25);
     }
 
-    public void addNameObjects() {
+    public void addNumberObjects() {
         add(numberField, 0, 80);
         add(numberFieldHeader, 5, 78);
     }
-
 
     public void onAddButton() {
         addButton.onClick(() -> {
@@ -56,7 +56,6 @@ public class AddInfo extends GraphicsGroup{
                 nameNumberMap.put(numberField.getText(), name);
                 numberField.setBackground(Color.WHITE);
                 nameField.setBackground(Color.WHITE);
-                System.out.println("hi");
                 result.setText("Added " + (name.length() != 0 ? " with " + name : "")); // If a name was entered, then it includes that in the output description
             }
             else {
@@ -65,5 +64,9 @@ public class AddInfo extends GraphicsGroup{
             }
         });
     }
+
+    // public GraphicsText getResult() {
+    //     return result;
+    // }
 
 }

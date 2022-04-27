@@ -9,24 +9,16 @@ import edu.macalester.graphics.ui.TextField;
 public class UI {
     public static final int CANVAS_WIDTH = 500;
     public static final int CANVAS_HEIGHT = 500;
-    //Text Fields:
-    private static TextField numberField;
-    private static TextField messageField;
-    private static TextField nameField;
+   
     
-    //Buttons:
-    private static Button addButton;
-    private static Button sendButton;
-
     // GraphicsText fields
-    private static GraphicsText result;
-
-    // Other:
+    private static GraphicsText result = new GraphicsText("asdf");
     private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
-    private static final String NAME_REPLACEMENT = "#####";
+   
 
     public UI(int canvasSize) {
         CanvasWindow canvas = new CanvasWindow("SMS sender", canvasSize, canvasSize);
+        canvas.add(result, 300, 300);
         new AddInfo(canvas, result, nameNumberMap);
         // Text fields:
         
@@ -59,36 +51,11 @@ public class UI {
         // canvas.add(sendButton, 100, 240);
 
         
-        onNumberButton();
-        onSendButton();
+        
+        
     }
 
-    private void onNumberButton() {
-        addButton.onClick(() -> {
-            boolean correctSize = numberField.getText().length() == 10;
-            boolean onlyNumbers = numberField.getText().matches("[0-9]+");
-            if (correctSize && onlyNumbers) {
-                String name = nameField.getText();
-                nameNumberMap.put(numberField.getText(), name);
-                numberField.setBackground(Color.WHITE);
-                nameField.setBackground(Color.WHITE);
-                result.setText("Added " + (name.length() != 0 ? " with " + name : "")); // If a name was entered, then it includes that in the output description
-            }
-            else {
-                numberField.setBackground(Color.RED);
-                nameField.setBackground(Color.RED);
-            }
-        });
-    }
-
-    private void onSendButton() {
-        sendButton.onClick(() -> {
-            String message = messageField.getText();
-            nameNumberMap.forEach((key, value) -> {
-                texting.text(key, message.replaceAll(NAME_REPLACEMENT, value));
-            });
-        });
-    }
+   
 
     public static void main(String[] args) {
         new UI(500);
