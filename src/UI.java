@@ -27,7 +27,7 @@ public class UI {
 
     public UI(int canvasSize) {
         CanvasWindow canvas = new CanvasWindow("SMS sender", canvasSize, canvasSize);
-        AddInfo addInfo = new AddInfo(canvas);
+        new AddInfo(canvas);
         // Text fields:
         
         // numberField = new TextField();
