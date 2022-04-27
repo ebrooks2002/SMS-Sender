@@ -29,7 +29,7 @@ public class sendSection extends GraphicsGroup {
             String message = messageField.getText();
             for (int count = 0; count < num; count++) {
                 nameNumberMap.forEach((key, value) -> {
-                    texting.text(key, message.replaceAll(NAME_REPLACEMENT, value)); // Replaces all instances of NAME_REPLACEMENT with name to personalize text messages
+                    text(key, message.replaceAll(NAME_REPLACEMENT, value)); // Replaces all instances of NAME_REPLACEMENT with name to personalize text messages
                 });
             }
         });
@@ -60,14 +60,36 @@ public class sendSection extends GraphicsGroup {
         canvas.add(this, x, y);
     }
 
+    public void text(String number, String message) {
+        String[] launchCmd = {"osascript", "-e",    "on run argv\n" +
+                                                        "tell application \"Messages\"\n" +
+                                                            "set targetBuddy to (item 1 of argv)\n" +
+                                                            "set targetService to id of 1st account whose service type = SMS\n" +
+                                                            "set textMessage to (item 2 of argv)\n" +
+                                                            "set theBuddy to participant targetBuddy of account id targetService\n" +
+                                                            "send textMessage to theBuddy\n" +
+                                                        "end tell\n" +
+                                                    "end run", number, message
+                                                };
+        try {
+            Runtime.getRuntime().exec(launchCmd);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         CanvasWindow canvas = new CanvasWindow("testing", 800, 800);
         GraphicsText result = new GraphicsText("Result");
         canvas.add(result, 0, 0);
         TextField message = new TextField();
+        message.setText("Hi #####, this works");
         canvas.add(message, 50, 50);
+        HashMap<String, String> test = new HashMap<>();
+        test.put("6504474476", "Timothy");
 
-        new sendSection(canvas, result, new HashMap<>(), message, 100, 100);
+        new sendSection(canvas, result, test, message, 100, 100);
     }
 
 
