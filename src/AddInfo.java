@@ -14,56 +14,80 @@ public class AddInfo extends GraphicsGroup{
     private HashMap<String, String> nameNumberMap;
 
     private TextField nameField = new TextField();
-    private GraphicsText nameFieldHeader = new GraphicsText("Enter a number:");
+    private GraphicsText nameFieldHeader = new GraphicsText("Enter a name:");
     
-
     private TextField numberField = new TextField();
-    private GraphicsText numberFieldHeader = new GraphicsText("Enter a name:");
+    private GraphicsText numberFieldHeader = new GraphicsText("Enter a number:");
     
     private Button addButton = new Button("Add");
     
-    public AddInfo(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap) {
+    public AddInfo(CanvasWindow canvas, GraphicsText result, HashMap<String, String> nameNumberMap, double x, double y) {
         super();
-        Rectangle rect = new Rectangle(10, 5, 200, 160);
+        this.nameNumberMap = nameNumberMap;
+        this.result = result;
+        Rectangle rect = new Rectangle(0, 0, 200, 160);
         rect.setStrokeColor(Color.BLACK);
         rect.setFillColor(Color.LIGHT_GRAY);
-        canvas.add(rect);
-        canvas.add(this, 30, 0);
+        add(rect);
         addNameObjects();
         addNumberObjects();
-        add(addButton, 100, 130);
+        add(addButton, 100, 110);
         onAddButton();
-
+        canvas.add(this, x, y);
     }
 
     public void addNumberObjects() {
-        add(nameField, 0, 28);
-        add(nameFieldHeader, 5, 25);
+        add(numberField, 10, 28);
+        add(numberFieldHeader, 15, 25);
     }
 
     public void addNameObjects() {
-        add(numberField, 0, 80);
-        add(numberFieldHeader, 5, 78);
+        add(nameField, 10, 80);
+        add(nameFieldHeader, 15, 78);
     }
 
 
     public void onAddButton() {
         addButton.onClick(() -> {
-            boolean correctSize = numberField.getText().length() == 10;
-            boolean onlyNumbers = numberField.getText().matches("[0-9]+");
+            String number = numberField.getText();
+            boolean correctSize = number.length() == 10;
+            boolean onlyNumbers = number.matches("[0-9]+");
             if (correctSize && onlyNumbers) {
                 String name = nameField.getText();
-                nameNumberMap.put(numberField.getText(), name);
-                numberField.setBackground(Color.WHITE);
-                nameField.setBackground(Color.WHITE);
-                System.out.println("hi");
-                result.setText("Added " + (name.length() != 0 ? " with " + name : "")); // If a name was entered, then it includes that in the output description
+                nameNumberMap.put(number, name);
+                updateFields(Color.GREEN, "Added " + number + (name.length() != 0 ? " as " + name : ""));
             }
             else {
-                numberField.setBackground(Color.RED);
-                nameField.setBackground(Color.RED);
+                updateFields(Color.RED, "Please enter in valid number");
             }
         });
     }
 
+
+    private void updateFields(Color color, String results) {
+        numberField.setBackground(color);
+        nameField.setBackground(color);
+        result.setFillColor(color);
+
+        numberField.setText("");
+        nameField.setText("");
+        result.setText(results);
+
+        Thread delay = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(1000); // Pauses this thread for 1 second before changing the color back to normal
+                    // Still allows us to use the canvas while this is running
+                    numberField.setBackground(Color.WHITE);
+                    nameField.setBackground(Color.WHITE);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        delay.start();
+    }
+    
 }
