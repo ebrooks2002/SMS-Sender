@@ -10,7 +10,6 @@ import javax.swing.event.DocumentListener;
 /**
  * Class copied from kilt graphics TextField, but replaces all textfields with JTextArea
  * so that the user can type longer messages and visually see it.
- * @param color
  */
 public class TextArea extends EmbeddedSwingComponent {
     private final JTextArea field;
