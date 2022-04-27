@@ -38,6 +38,7 @@ public class SendSection extends GraphicsGroup {
             }
             result.setText("Sent all messages!");
             result.setFillColor(Color.GREEN);
+            messageField.setText("Input message here: ");
         });
 
         Button clear = new Button("Clear all data"); // Clears names and numbers
