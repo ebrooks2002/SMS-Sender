@@ -27,35 +27,36 @@ public class UI {
 
     public UI(int canvasSize) {
         CanvasWindow canvas = new CanvasWindow("SMS sender", canvasSize, canvasSize);
+        AddInfo addInfo = new AddInfo(canvas);
         // Text fields:
-        nameField = new TextField();
-        numberField = new TextField();
-        messageField = new TextField();
+        
+        // numberField = new TextField();
+        // messageField = new TextField();
 
-        // Headers for each field:
-        GraphicsText nameFieldHeader = new GraphicsText("Enter a name:");
-        GraphicsText numberFieldHeader = new GraphicsText("Phone Number: ");
-        GraphicsText messageFieldHeader = new GraphicsText("Message:");
-        result = new GraphicsText("Result of previous action");
+        // // Headers for each field:
+        
+        // GraphicsText numberFieldHeader = new GraphicsText("Phone Number: ");
+        // GraphicsText messageFieldHeader = new GraphicsText("Message:");
+        // result = new GraphicsText("Result of previous action");
 
-        // Buttons:
-        addButton = new Button("Add name/number");
-        sendButton = new Button("Send message");
+        // // Buttons:
+        
+        // sendButton = new Button("Send message");
 
-        // Text fields:
-        canvas.add(numberField, 100, 140);
-        canvas.add(messageField, 100, 190);
-        canvas.add(nameField, 100, 90);
+        // // Text fields:
+        // canvas.add(numberField, 100, 140);
+        // canvas.add(messageField, 100, 190);
+        // canvas.add(nameField, 100, 90);
 
-        // Headers for each field:
-        canvas.add(numberFieldHeader, 100, 135);
-        canvas.add(messageFieldHeader, 105, 185);
-        canvas.add(nameFieldHeader, 100, 80);
-        canvas.add(result, 50, 50);
+        // // Headers for each field:
+        // canvas.add(numberFieldHeader, 100, 135);
+        // canvas.add(messageFieldHeader, 105, 185);
+        
+        // canvas.add(result, 50, 50);
 
-        // Buttons:
-        canvas.add(addButton, 200, 190);
-        canvas.add(sendButton, 100, 240);
+        // // Buttons:
+        // canvas.add(addButton, 200, 190);
+        // canvas.add(sendButton, 100, 240);
 
         
         onNumberButton();
