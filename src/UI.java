@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.macalester.graphics.CanvasWindow;
@@ -12,121 +11,79 @@ public class UI {
     private static TextField numberField;
     private static TextField messageField;
     private static TextField nameField;
-    private static TextField yourNumberField;
-    //Headers for each field:
-    private static GraphicsText yourNumberFieldHeader;
-    private static GraphicsText numberFieldHeader;
-    private static GraphicsText messageFieldHeader;
-    private static GraphicsText nameFieldHeader;
+    
     //Buttons:
-    private static Button yourNumberButton;
-    private static Button nameButton;
-    private static Button numberButton;
-    private static Button messageButton;
+    private static Button addButton;
     private static Button sendButton;
-    //Other:
-    private ArrayList<String> numberList;
-    private CanvasWindow canvas;
-    private String message;
+
+    // GraphicsText fields
+    private static GraphicsText result;
+
+    // Other:
     private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
+    private static final String NAME_REPLACEMENT = "#####";
 
     public UI(int canvasSize) {
-        this.canvas = new CanvasWindow("SMS sender", canvasSize, (int) (canvasSize * .8));
-        //Text fields:
-        yourNumberField = new TextField();
+        CanvasWindow canvas = new CanvasWindow("SMS sender", canvasSize, canvasSize);
+        // Text fields:
         nameField = new TextField();
         numberField = new TextField();
         messageField = new TextField();
-        //Headers for each field:
-        yourNumberFieldHeader = new GraphicsText("Enter your phone number");
-        nameFieldHeader = new  GraphicsText("Enter a name:");
-        numberFieldHeader = new GraphicsText("Phone Number: ");
-        messageFieldHeader = new GraphicsText("Message:");
-        //Buttons:
-        yourNumberButton = new Button("Enter");
-        nameButton = new Button("Enter");
-        numberButton = new Button("Enter");
-        messageButton = new Button("Enter");
+
+        // Headers for each field:
+        GraphicsText nameFieldHeader = new GraphicsText("Enter a name:");
+        GraphicsText numberFieldHeader = new GraphicsText("Phone Number: ");
+        GraphicsText messageFieldHeader = new GraphicsText("Message:");
+        result = new GraphicsText("Result of previous action");
+
+        // Buttons:
+        addButton = new Button("Add name/number");
         sendButton = new Button("Send message");
 
-        numberList = new ArrayList<String>();
-        //Text fields:
-        canvas.add(yourNumberField, 100,40);
+        // Text fields:
         canvas.add(numberField, 100, 140);
         canvas.add(messageField, 100, 190);
-        canvas.add(nameField, 100,90);
-        //Headers for each field:
-        canvas.add(yourNumberFieldHeader, 100, 30);
+        canvas.add(nameField, 100, 90);
+
+        // Headers for each field:
         canvas.add(numberFieldHeader, 100, 135);
         canvas.add(messageFieldHeader, 105, 185);
         canvas.add(nameFieldHeader, 100, 80);
-        //Buttons:
-        canvas.add(yourNumberButton, 200, 40);
-        canvas.add(nameButton, 200, 90);
-        canvas.add(numberButton, 200, 140);
-        canvas.add(messageButton, 200, 190);
+        canvas.add(result, 50, 50);
+
+        // Buttons:
+        canvas.add(addButton, 200, 190);
         canvas.add(sendButton, 100, 240);
         
+        // Setting up buttons:
         onNumberButton();
-        onMessageButton();
         onSendButton();
-        onYourNumberButton();
     }
 
     private void onNumberButton() {
-        numberButton.onClick(() -> {
-            Boolean correctSize = numberField.getText().length() == 10;
-            Boolean onlyNumbers = numberField.getText().matches("[0-9]+");
-            Boolean notEnteredYet = !numberList.contains(numberField.getText());
-            if (correctSize && onlyNumbers && notEnteredYet) {
-                numberList.add(numberField.getText());
-                System.out.println(numberList);
-                numberField.setBackground(Color.GREEN);
-            } 
-            else {
-                System.out.println("Please Enter a valid phone number.");
-                numberField.setBackground(Color.RED);
-            }
-        });
-    }
-
-    private static void onYourNumberButton() {
-        yourNumberButton.onClick(() -> {
-            Boolean correctSize = yourNumberField.getText().length() == 10;
-            Boolean onlyNumbers = yourNumberField.getText().matches("[0-9]+");
+        addButton.onClick(() -> {
+            boolean correctSize = numberField.getText().length() == 10;
+            boolean onlyNumbers = numberField.getText().matches("[0-9]+");
             if (correctSize && onlyNumbers) {
-                numberField.setBackground(Color.GREEN);
-            } 
+                String name = nameField.getText();
+                nameNumberMap.put(numberField.getText(), name);
+                numberField.setBackground(Color.WHITE);
+                nameField.setBackground(Color.WHITE);
+                result.setText("Added " + (name.length() != 0 ? " with " + name : "")); // If a name was entered, then it includes that in the output description
+            }
             else {
-                System.out.println("Please Enter a valid phone number.");
                 numberField.setBackground(Color.RED);
-            }
-        });
-    }
-
-    private static void onNameButton() {
-        nameButton.onClick(() -> {
-            
-        });
-    }
-
-    private void onMessageButton() {
-        messageButton.onClick(() -> {
-            message = new String();
-            Boolean notEmpty = messageField.getText().length() != 0;
-            if (notEmpty) {
-                message = messageField.getText();
-            }
-            else {
-                System.out.println("Enter a valid message.");
-                messageField.setBackground(Color.RED);
+                nameField.setBackground(Color.RED);
             }
         });
     }
 
     private void onSendButton() {
         sendButton.onClick(() -> {
-            System.out.println(message);
+            String message = messageField.getText();
+            nameNumberMap.forEach((key, value) -> {
+                texting.text(key, message.replaceAll(NAME_REPLACEMENT, value));
+            });
         });
     }
 
