@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.lang.runtime.*;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 public class texting {
 
@@ -26,13 +22,6 @@ public class texting {
         catch (Exception e) {
             e.printStackTrace();
         }
-        // BufferedReader bufferedReader = new BufferedReader(
-        // new InputStreamReader(process.getErrorStream()));
-        // while (true) {
-        //     String result = bufferedReader.readLine();
-        //     if (result == null) break;
-        //     System.out.println(result);
-        // }
     }
 
     public static void main(String[] args) {
