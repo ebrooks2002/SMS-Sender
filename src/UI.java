@@ -26,6 +26,9 @@ public class UI {
         new AddInfo(canvas, result, nameNumberMap, instruct.getWidth(), 0);
 
         new SendSection(canvas, result, nameNumberMap, message, message.getWidth(), instruct.getHeight());
+        
+        new RecipientsList(canvas, nameNumberMap, 0, instruct.getHeight()+100);
+       
     }
     public static void main(String[] args) {
         new UI();

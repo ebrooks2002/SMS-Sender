@@ -67,6 +67,7 @@ public class AddInfo extends GraphicsGroup{
             if (correctSize && onlyNumbers) {
                 String name = nameField.getText();
                 nameNumberMap.put(number, name);
+                RecipientsList.addNewTextField(number, name);
                 updateFields(Color.GREEN, "Added " + number + (name.length() != 0 ? " as " + name : ""));
             }
             else {
