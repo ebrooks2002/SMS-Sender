@@ -1,3 +1,3 @@
 # SMS App
 
-Info about your project goes here
+The app you can use to spam your friends.
