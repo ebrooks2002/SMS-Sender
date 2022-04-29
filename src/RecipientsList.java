@@ -1,100 +1,103 @@
 import java.awt.Color;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Queue;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Rectangle;
-import edu.macalester.graphics.TextAlignment;
-import edu.macalester.graphics.ui.Button;
-import edu.macalester.graphics.ui.TextField;
 
+/**
+ * Displays the 12 most recent additions of numbers and names to to hashmap.
+ */
+public class RecipientsList {
 
-public class RecipientsList extends GraphicsGroup {
-
-    private static HashMap<String, String> nameNumberMap;
     private static GraphicsText nameHeader = new GraphicsText("Names");
-    private static CanvasWindow canvas;
     private static GraphicsText numberHeader = new GraphicsText("Numbers");
-    private static GraphicsText newNumber;
-    private static double newNumSize = 580;
-    private static GraphicsText newName;
-    private static double newNameSize = 580;
-    private static List<String> numbersList = new ArrayList<>();
-    private static List<String> nameList = new ArrayList<>();
-    private static Queue<GraphicsText> numbersQueue = new ArrayDeque<>();
-    private static Queue<GraphicsText> nameQueue = new ArrayDeque<>();
-    private static int counter = 0;
+    private static ArrayList<GraphicsText> numbersList = new ArrayList<>();
+    private static ArrayList<GraphicsText> nameList = new ArrayList<>();
 
-    private static Rectangle rect;
+    private static GraphicsGroup group = new GraphicsGroup();
 
-    public RecipientsList(CanvasWindow canvas, HashMap<String, String> nameNumberMap, double x, double y) {
-        super();
-        this.nameNumberMap = nameNumberMap;
-        this.canvas = canvas;
-        rect = new Rectangle(0, 0, 400, 280);
+    public RecipientsList(CanvasWindow canvas, double x, double y) {
+        Rectangle rect = new Rectangle(0, 0, 400, 280);
         rect.setStrokeColor(Color.BLACK);
         rect.setFillColor(Color.LIGHT_GRAY);
-        add(rect);
-        canvas.add(this, x, y);
+        group.add(rect);
         nameHeader.setFillColor(Color.BLUE);
         nameHeader.setFontSize(15);
-        add(nameHeader);
+        group.add(nameHeader);
         nameHeader.setCenter(35, 20);
 
         numberHeader.setFillColor(Color.BLUE);
         numberHeader.setFontSize(15);
-        add(numberHeader);
+        group.add(numberHeader);
         numberHeader.setCenter(rect.getWidth() - 40, 20);
 
-
+        canvas.add(group, x, y);
     }
 
+    /**
+     * Adds two new GraphicsTexts containing the name and the number to the displayed data. Replaces the name
+     * if the displayed data already has a copy of the number on it
+     */
     public static void addNewTextField(String number, String name) {
-        if (!numbersList.contains(number) && !nameList.contains(name) && !name.equals("") && !number.equals("")) {
-            addNumber(number);
-            addName(name);
-            counter++;
+        for (int textNum = 0; textNum < numbersList.size(); textNum++) {
+            if (numbersList.get(textNum).getText().equals(number)) {
+                GraphicsText changeName = nameList.get(textNum);
+                double previousWidth = changeName.getWidth();
+                changeName.setText(name.equals("") ? "NO NAME" : name);
+                double newWidth = changeName.getWidth();
+                changeName.moveBy(previousWidth - newWidth, 0); // Shifts name over so that it still fits on screen
 
-        }
-        if (name.equals("")) {
-            addNumber(number);
-            name = "NO NAME";
-            addName(name);
-            counter++;
-        }
-        if(counter>=12){
-            canvas.remove(nameQueue.poll());
-            canvas.remove(numbersQueue.poll());
+                return;
+            }
         }
 
+        addNumber(number);
+        addName(name.equals("") ? "NO NAME" : name);
+
+        if (numbersList.size() > 12) {
+            
+            // Removes the last element added to fit all elements on screen
+            group.remove(numbersList.remove(0)); 
+            group.remove(nameList.remove(0));
+        }
+
+        // Shifts all the elements downward to make room for new elements
+        numbersList.forEach(text -> {
+            text.moveBy(0, 20);
+        });
+        nameList.forEach(text -> {
+            text.moveBy(0, 20);
+        });
     }
 
-    public static void addNumber(String number) {
-        newNumber = new GraphicsText(number);
-        newNumber.setCenter(35, 20);
+    private static void addNumber(String number) {
+        GraphicsText newNumber = new GraphicsText(number);
+        newNumber.setCenter(50, 30);
         newNumber.setFillColor(Color.BLUE);
         newNumber.setFontSize(15);
-        canvas.add(newNumber);
-        newNumber.setCenter(rect.getWidth() - 65, newNumSize);
-        newNumSize -= 20;
-        numbersList.add(number);
-        numbersQueue.add(newNumber);
+        group.add(newNumber);
+        numbersList.add(newNumber);
     }
 
-    public static void addName(String name) {
-        newName = new GraphicsText(name);
-        newName.setCenter(35, 20);
+    private static void addName(String name) {
+        GraphicsText newName = new GraphicsText(name);
+        newName.setCenter(390 - newName.getWidth() / 2, 30);
         newName.setFillColor(Color.BLUE);
         newName.setFontSize(15);
-        canvas.add(newName);
-        newName.setCenter(40, newNameSize);
-        newNameSize -= 20;
-        nameList.add(name);
-        nameQueue.add(newName);
+        group.add(newName);
+        nameList.add(newName);
+    }
+
+    /**
+     * Clears all GraphicsText names and numbers from the group and from their respective lists
+     */
+    public static void clear() {
+        // Removes all text elements of names and numbers from screen
+        numbersList.forEach(group::remove);
+        nameList.forEach(group::remove);
+        numbersList.clear();
+        nameList.clear();
     }
 }

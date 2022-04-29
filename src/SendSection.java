@@ -12,7 +12,7 @@ public class SendSection extends GraphicsGroup {
     public static final String NAME_REPLACEMENT = "##";
 
     /**
-     * Setsup placement of objects as well as the commands of buttons.
+     * Sets up placement of objects as well as the commands of buttons.
      * @param result = GraphicsText that gets updated based on success or failure to notify user
      * @param nameNumberMap = hashmap containing all of the numbers / names
      * @param messageField = JTextArea containing the message we want to send
@@ -53,6 +53,7 @@ public class SendSection extends GraphicsGroup {
         Button clear = new Button("Clear all data"); // Clears names and numbers
         clear.onClick(() -> {
             nameNumberMap.clear();
+            RecipientsList.clear(); // Clears all of the displayed data
             result.setText("Cleared all data");
             result.setFillColor(Color.BLUE);
         });

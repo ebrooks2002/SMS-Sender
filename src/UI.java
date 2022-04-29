@@ -8,7 +8,7 @@ import edu.macalester.graphics.GraphicsText;
  */
 public class UI {
     private static final int CANVAS_WIDTH = 800;
-    private static final int CANVAS_HEIGHT = 600;
+    private static final int CANVAS_HEIGHT = 700;
     
     private HashMap<String, String> nameNumberMap = new HashMap<String, String>();
 
@@ -27,7 +27,7 @@ public class UI {
 
         new SendSection(canvas, result, nameNumberMap, message, message.getWidth(), instruct.getHeight());
         
-        new RecipientsList(canvas, nameNumberMap, 0, instruct.getHeight()+100);
+        new RecipientsList(canvas, 0, instruct.getHeight()+100);
        
     }
     public static void main(String[] args) {
